@@ -2,6 +2,7 @@
   "name": "iobroker.smarthome-dashboard-iii",
   "private": true,
   "version": "0.1.0",
+  "main": "main.cjs",
   "type": "module",
   "scripts": {
     "dev": "vite",
