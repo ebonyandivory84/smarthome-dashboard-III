@@ -1,0 +1,28 @@
+{
+  "type": "panel",
+  "items": {
+    "port": {
+      "type": "number",
+      "label": "HTTP Port",
+      "help": "Port für den Dashboard-Webserver (Standard: 8110)",
+      "min": 1024,
+      "max": 65535,
+      "default": 8110,
+      "sm": 4
+    },
+    "devServerUrl": {
+      "type": "text",
+      "label": "Dev-Server URL",
+      "help": "URL des lokalen Vite Dev-Servers (leer = Production-Build). Beispiel: http://localhost:5173",
+      "default": "",
+      "sm": 8
+    },
+    "enableDevProxy": {
+      "type": "checkbox",
+      "label": "Dev-Proxy aktivieren",
+      "help": "API-Anfragen an den Dev-Server weiterleiten",
+      "default": false,
+      "sm": 4
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "common": {
+    "name": "smarthome-dashboard-iii",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "Initial release",
+        "de": "Erstveröffentlichung"
+      }
+    },
+    "title": "SmartHome Dashboard III",
+    "title_de": "SmartHome Dashboard III",
+    "desc": "Lightweight SmartHome dashboard for ioBroker — React 19 + Vite, optimized for low-end hardware",
+    "desc_de": "Schlankes SmartHome-Dashboard für ioBroker — React 19 + Vite, optimiert für schwächere Hardware",
+    "authors": ["sebastian"],
+    "keywords": ["smarthome", "dashboard", "visualization"],
+    "license": "MIT",
+    "platform": "Node.js",
+    "os": ["linux", "darwin", "win32"],
+    "type": "visualization",
+    "mode": "daemon",
+    "compact": true,
+    "enabled": true,
+    "restartSchedule": "",
+    "localLink": "%protocol%://%ip%:%native_port%/smarthome-dashboard-iii",
+    "localLinks": {
+      "_default": "%protocol%://%ip%:%native_port%/smarthome-dashboard-iii"
+    },
+    "webservers": [{ "port": 8110 }],
+    "dependencies": [{ "js-controller": ">=5.0.0" }],
+    "adminUI": { "config": "json" },
+    "main": "main.js"
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": { "name": "Information" },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": "Connected",
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "config",
+      "type": "state",
+      "common": {
+        "name": "Dashboard Configuration",
+        "type": "string",
+        "role": "json",
+        "read": true,
+        "write": true,
+        "def": ""
+      },
+      "native": {}
+    }
+  ],
+  "native": {
+    "port": 8110
+  }
+}

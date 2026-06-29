@@ -1,0 +1,38 @@
+{
+  "name": "smarthome-dashboard-iii",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:copy": "tsc -b && vite build && cp -R dist/. adapter/www/",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "adapter:start": "node main.js"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.4.1",
+    "@tailwindcss/vite": "^4.3.2",
+    "express": "^5.2.1",
+    "flv.js": "^1.6.2",
+    "framer-motion": "^12.42.0",
+    "http-proxy-middleware": "^3.0.7",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-grid-layout": "^2.2.3",
+    "tailwindcss": "^4.3.2",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-grid-layout": "^1.3.6",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^6.0.2",
+    "oxlint": "^1.69.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0"
+  }
+}
