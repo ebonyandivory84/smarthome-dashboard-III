@@ -1,0 +1,1 @@
+var e={solar:{pv:`#ffd166`,home:`#5c7cff`,grid:`#6cff8f`,battery:`#ff9f1c`},energy:{pv:`#ffd166`,home:`#5c7cff`,battery:`#ff9f1c`,grid:`#6cff8f`},wallbox:{charging:`#6cff8f`,idle:`#8c94ad`,error:`#ff6b7a`},heating:{active:`#ff6b7a`,idle:`#8c94ad`,off:`#5c7cff`}};export{e as t};
