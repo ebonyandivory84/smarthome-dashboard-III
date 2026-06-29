@@ -43,10 +43,6 @@ export default function SolarWidget({ widget }: Props) {
   const selfDay = g(widget.selfDayStateId);
 
   const c = widgetColors.solar;
-  const gridImport = grid !== null ? Math.max(0, grid) : null;
-  const gridExport = grid !== null ? Math.max(0, -grid) : null;
-  const battCharge = batt !== null ? Math.max(0, batt) : null;
-  const battDischarge = batt !== null ? Math.max(0, -batt) : null;
 
   const nodes = [
     { id: 'pv', label: 'Solar', value: fmt(pv), color: c.pv, icon: SunIcon },

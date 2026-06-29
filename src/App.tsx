@@ -5,7 +5,6 @@ import { DashboardGrid } from './components/grid/DashboardGrid';
 import { SettingsModal } from './components/modals/SettingsModal';
 import { WidgetLibraryModal } from './components/modals/WidgetLibraryModal';
 import { initSounds } from './utils/sounds';
-import { statePush } from './services/iobroker';
 
 function Dashboard() {
   const [settingsOpen, setSettingsOpen] = useState(false);

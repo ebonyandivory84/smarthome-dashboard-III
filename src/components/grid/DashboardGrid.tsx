@@ -1,11 +1,24 @@
-import { Suspense, lazy, useMemo, useCallback, useState } from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import type { Layout } from 'react-grid-layout';
+import { Suspense, lazy, useMemo, useCallback, useState, useRef } from 'react';
+// @ts-ignore – @types/react-grid-layout uses export= which is incompatible with verbatimModuleSyntax; Vite bundles fine
+import { ResponsiveGridLayout } from 'react-grid-layout';
+// @ts-ignore
+import type { Layout as RGLItem } from 'react-grid-layout';
 import { useDashboard } from '../../context/DashboardContext';
 import { WidgetEditorModal } from '../modals/WidgetEditorModal';
 import type { WidgetConfig, GridPos, Breakpoint } from '../../types/dashboard';
 
-const ResponsiveGrid = WidthProvider(Responsive);
+function useContainerWidth() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(window.innerWidth);
+  const observe = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+    const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width));
+    ro.observe(node);
+    return () => ro.disconnect();
+  }, []);
+  return { ref: observe, width };
+}
 
 // ── Lazy widget imports ────────────────────────────────────────────────────────
 const StateWidget     = lazy(() => import('../widgets/StateWidget'));
@@ -43,12 +56,12 @@ const WIDGET_MAP: Record<string, React.ComponentType<{ widget: WidgetConfig }>> 
 const BREAKPOINTS = { desktop: 1280, tablet: 768, phone: 0 } as const;
 const COLS = { desktop: 3, tablet: 3, phone: 1 } as const;
 
-function toRGLLayout(widget: WidgetConfig, bp: Breakpoint): Layout {
+function toRGLLayout(widget: WidgetConfig, bp: Breakpoint): RGLItem {
   const pos: GridPos = widget.layouts[bp] ?? widget.layouts.desktop ?? { x: 0, y: 0, w: 1, h: 2 };
   return { i: widget.id, x: pos.x, y: pos.y, w: pos.w, h: pos.h, minW: 1, minH: 1 };
 }
 
-function fromRGLLayout(l: Layout): GridPos {
+function fromRGLLayout(l: RGLItem): GridPos {
   return { x: l.x, y: l.y, w: l.w, h: l.h };
 }
 
@@ -72,7 +85,7 @@ export function DashboardGrid() {
   }, [widgets]);
 
   const onLayoutChange = useCallback(
-    (_: Layout[], allLayouts: Record<string, Layout[]>) => {
+    (_: RGLItem[], allLayouts: Record<string, RGLItem[]>) => {
       if (!editMode) return;
       const bps = Object.keys(allLayouts) as Breakpoint[];
       for (const bp of bps) {
@@ -86,15 +99,19 @@ export function DashboardGrid() {
     [editMode, activePageId, updateLayouts],
   );
 
+  const { ref: containerRef, width: containerWidth } = useContainerWidth();
+
   return (
     <div
+      ref={containerRef}
       className={`flex-1 overflow-y-auto overflow-x-hidden ${editMode ? 'layout-mode' : ''}`}
       style={{ background: page?.backgroundImage
         ? `linear-gradient(rgba(4,8,17,${1 - (page.backgroundOpacity ?? 0.3)}),rgba(4,8,17,${1 - (page.backgroundOpacity ?? 0.3)})), url(${page.backgroundImage}) center/cover`
         : undefined,
       }}
     >
-      <ResponsiveGrid
+      <ResponsiveGridLayout
+        width={containerWidth}
         breakpoints={BREAKPOINTS}
         cols={COLS}
         rowHeight={rowHeight}
@@ -133,7 +150,7 @@ export function DashboardGrid() {
             </div>
           );
         })}
-      </ResponsiveGrid>
+      </ResponsiveGridLayout>
       <WidgetEditorModal
         open={editingWidget !== null}
         widget={editingWidget?.widget ?? null}

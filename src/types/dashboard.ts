@@ -54,19 +54,16 @@ export type StateWidgetConfig = WidgetBase & {
   type: 'state';
   stateId: string;
   writeable: boolean;
-  format?: 'boolean' | 'number' | 'text';
+  format?: 'boolean' | 'number' | 'string' | 'button';
   onLabel?: string;
   offLabel?: string;
+  labelOn?: string;
+  labelOff?: string;
   activeValue?: string;
-  inactiveValue?: string;
   valueLabels?: Record<string, string>;
+  decimals?: number;
   unit?: string;
   iconImage?: string;
-  iconImageCrop?: 'none' | 'rounded' | 'circle';
-  addonMode?: 'none' | 'text' | 'bars' | 'circle';
-  addonStateId?: string;
-  addonUnit?: string;
-  addonColor?: string;
   maximizeStateId?: string;
 };
 
@@ -158,7 +155,11 @@ export type HeatingWidgetConfig = WidgetBase & {
   modeReadStateId?: string;
   modeWriteStateId?: string;
   activeProgStateId?: string;
+  humidityStateId?: string;
+  valveStateId?: string;
   backgroundImage?: string;
+  minTemp?: number;
+  maxTemp?: number;
 };
 
 // ── Grafana widget ────────────────────────────────────────────────────────────
@@ -167,11 +168,14 @@ export type GrafanaWidgetConfig = WidgetBase & {
   snapshotUrl: string;
   refreshMs?: number;
   fullscreenUrl?: string;
+  width?: number;
+  height?: number;
 };
 
 // ── Weather widget ────────────────────────────────────────────────────────────
 export type WeatherWidgetConfig = WidgetBase & {
   type: 'weather';
+  source?: 'open-meteo' | 'iobroker';
   latitude?: number;
   longitude?: number;
   locationName?: string;
@@ -186,6 +190,7 @@ export type NumpadWidgetConfig = WidgetBase & {
   stateId?: string;
   maxLength?: number;
   confirmStateId?: string;
+  pinMode?: boolean;
 };
 
 // ── Link widget ───────────────────────────────────────────────────────────────
@@ -201,6 +206,7 @@ export type LinkWidgetConfig = WidgetBase & {
 export type LogWidgetConfig = WidgetBase & {
   type: 'log';
   levelFilter?: ('debug' | 'info' | 'warn' | 'error')[];
+  minLevel?: 'debug' | 'info' | 'warn' | 'error';
   sourceFilter?: string;
   maxLines?: number;
 };
@@ -209,6 +215,7 @@ export type LogWidgetConfig = WidgetBase & {
 export type ScriptWidgetConfig = WidgetBase & {
   type: 'script';
   scriptId?: string;
+  buttonLabel?: string;
   showOutput?: boolean;
 };
 
@@ -216,6 +223,7 @@ export type ScriptWidgetConfig = WidgetBase & {
 export type SystemStatsWidgetConfig = WidgetBase & {
   type: 'systemStats';
   host?: string;
+  refreshMs?: number;
 };
 
 // ── Union ─────────────────────────────────────────────────────────────────────

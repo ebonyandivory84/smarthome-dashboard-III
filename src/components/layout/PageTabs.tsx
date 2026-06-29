@@ -3,7 +3,7 @@ import { useDashboard } from '../../context/DashboardContext';
 import { playSound } from '../../utils/sounds';
 
 export function PageTabs() {
-  const { pages, activePageId, setActivePageId, editMode, deletePage, renamePage } = useDashboard();
+  const { pages, activePageId, setActivePageId, editMode, deletePage } = useDashboard();
 
   const handleTabClick = (id: string) => {
     if (id !== activePageId) {

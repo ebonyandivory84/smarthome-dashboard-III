@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIoBrokerStates } from '../../hooks/useIoBrokerStates';
 import { api } from '../../services/iobroker';

@@ -2,10 +2,12 @@
   "name": "smarthome-dashboard-iii",
   "private": true,
   "version": "0.1.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:copy": "tsc -b && vite build && cp -R dist/. adapter/www/",
+    "build": "vite build",
+    "build:copy": "vite build && cp -R dist/. adapter/www/",
+    "typecheck": "tsc -b",
     "lint": "oxlint",
     "preview": "vite preview",
     "adapter:start": "node main.js"

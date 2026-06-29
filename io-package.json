@@ -29,7 +29,7 @@
     "webservers": [{ "port": 8110 }],
     "dependencies": [{ "js-controller": ">=5.0.0" }],
     "adminUI": { "config": "json" },
-    "main": "main.js"
+    "main": "main.cjs"
   },
   "objects": [],
   "instanceObjects": [

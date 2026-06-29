@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../../services/iobroker';
 import { playSound } from '../../utils/sounds';
-import CameraWidget from './CameraWidget';
 import type { CameraWidgetConfig } from '../../types/dashboard';
 
 interface Props { widget: CameraWidgetConfig }

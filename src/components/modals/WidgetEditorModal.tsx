@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useDashboard } from '../../context/DashboardContext';
 import { playSound } from '../../utils/sounds';
 import type {
-  WidgetConfig, StateWidgetConfig, CameraWidgetConfig, CameraTalkWidgetConfig,
+  WidgetConfig, StateWidgetConfig, CameraWidgetConfig,
   SolarWidgetConfig, EnergyWidgetConfig, WallboxWidgetConfig, HeatingWidgetConfig,
   GrafanaWidgetConfig, WeatherWidgetConfig, NumpadWidgetConfig, LinkWidgetConfig,
   LogWidgetConfig, ScriptWidgetConfig, SystemStatsWidgetConfig,
@@ -85,7 +85,7 @@ export function WidgetEditorModal({ open, widget, pageId, onClose }: Props) {
             {/* Type-specific fields */}
             {widget.type === 'state' && <StateEditor widget={widget as StateWidgetConfig} update={update} />}
             {widget.type === 'camera' && <CameraEditor widget={widget as CameraWidgetConfig} update={update} />}
-            {widget.type === 'cameraTalk' && <CameraTalkEditor widget={widget as CameraTalkWidgetConfig} update={update} />}
+            {widget.type === 'cameraTalk' && <CameraTalkEditor widget={widget as CameraWidgetConfig} update={update} />}
             {widget.type === 'solar' && <SolarEditor widget={widget as SolarWidgetConfig} update={update} />}
             {widget.type === 'energy' && <EnergyEditor widget={widget as EnergyWidgetConfig} update={update} />}
             {widget.type === 'wallbox' && <WallboxEditor widget={widget as WallboxWidgetConfig} update={update} />}
@@ -163,28 +163,45 @@ function StateEditor({ widget, update }: { widget: StateWidgetConfig; update: (p
           </Field>
         </>
       )}
+
     </>
   );
 }
 
 function CameraEditor({ widget, update }: { widget: CameraWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
+  const mode = widget.previewMode ?? 'snapshot';
+  const fsMode = widget.fullscreenMode ?? mode;
+  const previewUrl = mode === 'snapshot' ? widget.snapshotUrl : mode === 'mjpeg' ? widget.mjpegUrl : widget.flvUrl;
+  const fsUrl = fsMode === 'snapshot' ? widget.fullscreenSnapshotUrl : fsMode === 'mjpeg' ? widget.fullscreenMjpegUrl : widget.fullscreenFlvUrl;
+
+  const setPreviewUrl = (v: string) => {
+    if (mode === 'snapshot') update({ snapshotUrl: v } as Partial<CameraWidgetConfig>);
+    else if (mode === 'mjpeg') update({ mjpegUrl: v } as Partial<CameraWidgetConfig>);
+    else update({ flvUrl: v } as Partial<CameraWidgetConfig>);
+  };
+  const setFsUrl = (v: string) => {
+    if (fsMode === 'snapshot') update({ fullscreenSnapshotUrl: v } as Partial<CameraWidgetConfig>);
+    else if (fsMode === 'mjpeg') update({ fullscreenMjpegUrl: v } as Partial<CameraWidgetConfig>);
+    else update({ fullscreenFlvUrl: v } as Partial<CameraWidgetConfig>);
+  };
+
   return (
     <>
       <Field label="Vorschau-Modus">
-        <Select value={widget.previewMode ?? 'snapshot'} options={[
+        <Select value={mode} options={[
           { value: 'snapshot', label: 'Snapshot' }, { value: 'mjpeg', label: 'MJPEG' }, { value: 'flv', label: 'FLV' },
-        ]} onChange={v => update({ previewMode: v } as Partial<CameraWidgetConfig>)} />
+        ]} onChange={v => update({ previewMode: v as 'snapshot' | 'mjpeg' | 'flv' })} />
       </Field>
-      <Field label="Vorschau-URL">
-        <input value={widget.previewUrl ?? ''} onChange={e => update({ previewUrl: e.target.value } as Partial<CameraWidgetConfig>)} style={inputStyle} placeholder="http://..." />
-      </Field>
-      <Field label="Vollbild-URL (optional)">
-        <input value={widget.fullscreenUrl ?? ''} onChange={e => update({ fullscreenUrl: e.target.value } as Partial<CameraWidgetConfig>)} style={inputStyle} placeholder="http://..." />
+      <Field label={`Vorschau-URL (${mode.toUpperCase()})`}>
+        <input value={previewUrl ?? ''} onChange={e => setPreviewUrl(e.target.value)} style={inputStyle} placeholder="http://..." />
       </Field>
       <Field label="Vollbild-Modus">
-        <Select value={widget.fullscreenMode ?? 'snapshot'} options={[
+        <Select value={fsMode} options={[
           { value: 'snapshot', label: 'Snapshot' }, { value: 'mjpeg', label: 'MJPEG' }, { value: 'flv', label: 'FLV' },
-        ]} onChange={v => update({ fullscreenMode: v } as Partial<CameraWidgetConfig>)} />
+        ]} onChange={v => update({ fullscreenMode: v as 'snapshot' | 'mjpeg' | 'flv' })} />
+      </Field>
+      <Field label={`Vollbild-URL (${fsMode.toUpperCase()})`}>
+        <input value={fsUrl ?? ''} onChange={e => setFsUrl(e.target.value)} style={inputStyle} placeholder="http://..." />
       </Field>
       <Field label="Refresh (ms)">
         <input type="number" min={500} step={500} value={widget.refreshMs ?? 5000} onChange={e => update({ refreshMs: Number(e.target.value) } as Partial<CameraWidgetConfig>)} style={inputStyle} />
@@ -196,7 +213,7 @@ function CameraEditor({ widget, update }: { widget: CameraWidgetConfig; update: 
   );
 }
 
-function CameraTalkEditor({ widget, update }: { widget: CameraTalkWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
+function CameraTalkEditor({ widget, update }: { widget: CameraWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
   return (
     <>
       <CameraEditor widget={widget} update={update} />
@@ -220,13 +237,16 @@ function CameraTalkEditor({ widget, update }: { widget: CameraTalkWidgetConfig; 
 }
 
 function SolarEditor({ widget, update }: { widget: SolarWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
-  const ids = widget.stateIds ?? {} as NonNullable<typeof widget.stateIds>;
-  const setId = (key: string, val: string) => update({ stateIds: { ...ids, [key]: val } } as Partial<SolarWidgetConfig>);
+  const fields: [keyof SolarWidgetConfig, string][] = [
+    ['pvStateId', 'PV-Leistung (W)'], ['homeStateId', 'Hausverbrauch (W)'],
+    ['gridStateId', 'Netz (W)'], ['batteryStateId', 'Batterie (W)'],
+    ['socStateId', 'Batterie SoC (%)'],
+  ];
   return (
     <>
-      {(['pv', 'home', 'grid', 'battery', 'soc', 'pvToday', 'consumeToday', 'selfUse'] as const).map(key => (
-        <Field key={key} label={key}>
-          <input value={(ids as Record<string, string>)[key] ?? ''} onChange={e => setId(key, e.target.value)} style={inputStyle} placeholder="adapter.0...." />
+      {fields.map(([key, label]) => (
+        <Field key={key} label={label}>
+          <input value={(widget[key] as string) ?? ''} onChange={e => update({ [key]: e.target.value } as Partial<SolarWidgetConfig>)} style={inputStyle} placeholder="adapter.0...." />
         </Field>
       ))}
     </>
@@ -234,13 +254,16 @@ function SolarEditor({ widget, update }: { widget: SolarWidgetConfig; update: (p
 }
 
 function EnergyEditor({ widget, update }: { widget: EnergyWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
-  const ids = widget.stateIds ?? {} as NonNullable<typeof widget.stateIds>;
-  const setId = (key: string, val: string) => update({ stateIds: { ...ids, [key]: val } } as Partial<EnergyWidgetConfig>);
+  const fields: [keyof EnergyWidgetConfig, string][] = [
+    ['pvStateId', 'PV (W)'], ['houseStateId', 'Haus (W)'],
+    ['batteryStateId', 'Batterie (W)'], ['gridStateId', 'Netz (W)'],
+    ['socStateId', 'SoC (%)'],
+  ];
   return (
     <>
-      {(['power', 'today', 'month', 'year'] as const).map(key => (
-        <Field key={key} label={key}>
-          <input value={(ids as Record<string, string>)[key] ?? ''} onChange={e => setId(key, e.target.value)} style={inputStyle} placeholder="adapter.0...." />
+      {fields.map(([key, label]) => (
+        <Field key={key} label={label}>
+          <input value={(widget[key] as string) ?? ''} onChange={e => update({ [key]: e.target.value } as Partial<EnergyWidgetConfig>)} style={inputStyle} placeholder="adapter.0...." />
         </Field>
       ))}
     </>
@@ -248,13 +271,17 @@ function EnergyEditor({ widget, update }: { widget: EnergyWidgetConfig; update: 
 }
 
 function WallboxEditor({ widget, update }: { widget: WallboxWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
-  const ids = widget.stateIds ?? {} as NonNullable<typeof widget.stateIds>;
-  const setId = (key: string, val: string) => update({ stateIds: { ...ids, [key]: val } } as Partial<WallboxWidgetConfig>);
+  const fields: [keyof WallboxWidgetConfig, string][] = [
+    ['powerStateId', 'Leistung (W)'], ['socStateId', 'SoC (%)'],
+    ['statusStateId', 'Status'], ['chargedStateId', 'Geladen (kWh)'],
+    ['allowedCurrentStateId', 'Max. Strom lesen'], ['writeCurrentStateId', 'Max. Strom schreiben'],
+    ['toggleStateId', 'Laden erlaubt'],
+  ];
   return (
     <>
-      {(['power', 'energy', 'state', 'allow', 'maxAmps', 'carConnected'] as const).map(key => (
-        <Field key={key} label={key}>
-          <input value={(ids as Record<string, string>)[key] ?? ''} onChange={e => setId(key, e.target.value)} style={inputStyle} placeholder="goe-charger.0...." />
+      {fields.map(([key, label]) => (
+        <Field key={key} label={label}>
+          <input value={(widget[key] as string) ?? ''} onChange={e => update({ [key]: e.target.value } as Partial<WallboxWidgetConfig>)} style={inputStyle} placeholder="goe-charger.0...." />
         </Field>
       ))}
     </>
@@ -262,13 +289,16 @@ function WallboxEditor({ widget, update }: { widget: WallboxWidgetConfig; update
 }
 
 function HeatingEditor({ widget, update }: { widget: HeatingWidgetConfig; update: (p: Partial<WidgetConfig>) => void }) {
-  const ids = widget.stateIds ?? {} as NonNullable<typeof widget.stateIds>;
-  const setId = (key: string, val: string) => update({ stateIds: { ...ids, [key]: val } } as Partial<HeatingWidgetConfig>);
+  const fields: [keyof HeatingWidgetConfig, string][] = [
+    ['tempActualStateId', 'Ist-Temperatur'], ['tempSetStateId', 'Soll-Temperatur'],
+    ['modeReadStateId', 'Modus lesen'], ['modeWriteStateId', 'Modus schreiben'],
+    ['humidityStateId', 'Luftfeuchtigkeit'], ['valveStateId', 'Ventilposition'],
+  ];
   return (
     <>
-      {(['setpoint', 'actual', 'mode', 'humidity', 'valve'] as const).map(key => (
-        <Field key={key} label={key}>
-          <input value={(ids as Record<string, string>)[key] ?? ''} onChange={e => setId(key, e.target.value)} style={inputStyle} placeholder="adapter.0...." />
+      {fields.map(([key, label]) => (
+        <Field key={key} label={label}>
+          <input value={(widget[key] as string) ?? ''} onChange={e => update({ [key]: e.target.value } as Partial<HeatingWidgetConfig>)} style={inputStyle} placeholder="adapter.0...." />
         </Field>
       ))}
       <Field label="Min Temp (°C)">
@@ -311,10 +341,10 @@ function WeatherEditor({ widget, update }: { widget: WeatherWidgetConfig; update
       {(widget.source ?? 'open-meteo') === 'open-meteo' && (
         <>
           <Field label="Breitengrad">
-            <input type="number" step={0.001} value={widget.lat ?? 48.1} onChange={e => update({ lat: Number(e.target.value) } as Partial<WeatherWidgetConfig>)} style={inputStyle} />
+            <input type="number" step={0.001} value={widget.latitude ?? 48.1} onChange={e => update({ latitude: Number(e.target.value) } as Partial<WeatherWidgetConfig>)} style={inputStyle} />
           </Field>
           <Field label="Längengrad">
-            <input type="number" step={0.001} value={widget.lon ?? 11.6} onChange={e => update({ lon: Number(e.target.value) } as Partial<WeatherWidgetConfig>)} style={inputStyle} />
+            <input type="number" step={0.001} value={widget.longitude ?? 11.6} onChange={e => update({ longitude: Number(e.target.value) } as Partial<WeatherWidgetConfig>)} style={inputStyle} />
           </Field>
         </>
       )}
@@ -324,7 +354,7 @@ function WeatherEditor({ widget, update }: { widget: WeatherWidgetConfig; update
             <input value={widget.tempStateId ?? ''} onChange={e => update({ tempStateId: e.target.value } as Partial<WeatherWidgetConfig>)} style={inputStyle} placeholder="daswetter.0...." />
           </Field>
           <Field label="Wettercode State-ID">
-            <input value={widget.condStateId ?? ''} onChange={e => update({ condStateId: e.target.value } as Partial<WeatherWidgetConfig>)} style={inputStyle} />
+            <input value={widget.conditionStateId ?? ''} onChange={e => update({ conditionStateId: e.target.value } as Partial<WeatherWidgetConfig>)} style={inputStyle} />
           </Field>
         </>
       )}
@@ -358,7 +388,7 @@ function LinkEditor({ widget, update }: { widget: LinkWidgetConfig; update: (p: 
         <Toggle value={widget.openInOverlay ?? true} onChange={v => update({ openInOverlay: v } as Partial<LinkWidgetConfig>)} />
       </Field>
       <Field label="Icon-URL (optional)">
-        <input value={widget.iconUrl ?? ''} onChange={e => update({ iconUrl: e.target.value } as Partial<LinkWidgetConfig>)} style={inputStyle} placeholder="https://..." />
+        <input value={widget.iconImage ?? ''} onChange={e => update({ iconImage: e.target.value } as Partial<LinkWidgetConfig>)} style={inputStyle} placeholder="https://..." />
       </Field>
       <Field label="Label">
         <input value={widget.label ?? ''} onChange={e => update({ label: e.target.value } as Partial<LinkWidgetConfig>)} style={inputStyle} />
