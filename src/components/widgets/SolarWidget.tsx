@@ -142,11 +142,9 @@ function Ribbon({ id, a, b, bow, wA, wB, color, active, dur }: RibbonProps) {
       <path d={buildRibbon(a, b, bow, wA, wB)} fill={`url(#${gid})`} />
       {active && (
         <path d={centerline(a, b, bow)} fill="none" stroke={color}
-          strokeWidth={1.8} strokeLinecap="round" strokeDasharray="5 11"
-          opacity={0.9} filter="url(#solar-glow)">
-          <animate attributeName="stroke-dashoffset" from="0" to="-32"
-            dur={`${dur}ms`} repeatCount="indefinite" />
-        </path>
+          strokeWidth={3} strokeLinecap="round" strokeDasharray="8 10"
+          strokeDashoffset={0} opacity={0.85} filter="url(#solar-glow)"
+          style={{ animation: `solar-flow ${dur}ms linear infinite` }} />
       )}
     </>
   );
@@ -309,6 +307,7 @@ export default function SolarWidget({ widget }: Props) {
         style={{ width: '100%', height: 'auto', display: 'block' }}
         preserveAspectRatio="xMidYMid meet">
         <defs>
+          <style>{`@keyframes solar-flow { to { stroke-dashoffset: -18; } }`}</style>
           <filter id="solar-glow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur" />
             <feMerge>
