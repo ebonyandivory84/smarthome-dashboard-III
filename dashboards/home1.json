@@ -1,0 +1,389 @@
+{
+  "version": 3,
+  "settings": {
+    "title": "SmartHome Dashboard",
+    "rowHeight": 120,
+    "soundSettings": { "enabled": true, "volume": 0.55 }
+  },
+  "pages": [
+    {
+      "id": "page-home",
+      "label": "SmartHome",
+      "widgets": [
+        {
+          "id": "weather-home",
+          "type": "weather",
+          "title": "Wetter",
+          "showTitle": false,
+          "source": "open-meteo",
+          "latitude": 52.52,
+          "longitude": 13.41,
+          "locationName": "Zuhause",
+          "layouts": {
+            "desktop": { "x": 0, "y": 0, "w": 1, "h": 2 },
+            "tablet":  { "x": 0, "y": 0, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 0, "w": 1, "h": 2 }
+          }
+        },
+        {
+          "id": "state-haustur",
+          "type": "state",
+          "title": "Haustür",
+          "showTitle": false,
+          "stateId": "0_userdata.0.doors.front",
+          "writeable": true,
+          "format": "boolean",
+          "onLabel": "Offen",
+          "offLabel": "Zu",
+          "layouts": {
+            "desktop": { "x": 0, "y": 2, "w": 1, "h": 1 },
+            "tablet":  { "x": 0, "y": 2, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 2, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "state-alarm",
+          "type": "state",
+          "title": "Alarm",
+          "showTitle": false,
+          "stateId": "0_userdata.0.alarm.armed",
+          "writeable": true,
+          "format": "boolean",
+          "onLabel": "Scharf",
+          "offLabel": "Unscharf",
+          "layouts": {
+            "desktop": { "x": 0, "y": 3, "w": 1, "h": 1 },
+            "tablet":  { "x": 0, "y": 3, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 3, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "state-scheibe",
+          "type": "state",
+          "title": "Scheibe",
+          "showTitle": false,
+          "stateId": "tuya.0.bf2bb23b342877f2e1maqy.1",
+          "writeable": true,
+          "format": "boolean",
+          "onLabel": "Offen",
+          "offLabel": "Zu",
+          "layouts": {
+            "desktop": { "x": 0, "y": 4, "w": 1, "h": 1 },
+            "tablet":  { "x": 0, "y": 4, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 4, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "camera-talk-instar",
+          "type": "cameraTalk",
+          "title": "Eingang",
+          "showTitle": false,
+          "previewMode": "snapshot",
+          "fullscreenMode": "snapshot",
+          "snapshotUrl": "http://192.168.44.253/snap.cgi?chn=11&user=dutchman&pwd=zezqyf-herKe4-qerpev",
+          "fullscreenSnapshotUrl": "http://192.168.44.253/snap.cgi?chn=11&user=dutchman&pwd=zezqyf-herKe4-qerpev",
+          "refreshMs": 2000,
+          "audioEnabled": true,
+          "pushToTalk": true,
+          "instarBaseUrl": "https://192.168.44.253",
+          "instarUser": "dutchman",
+          "instarPass": "zezqyf-herKe4-qerpev",
+          "layouts": {
+            "desktop": { "x": 1, "y": 0, "w": 1, "h": 2 },
+            "tablet":  { "x": 1, "y": 0, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 5, "w": 1, "h": 2 }
+          }
+        },
+        {
+          "id": "camera-37",
+          "type": "camera",
+          "title": "Einfahrt",
+          "showTitle": false,
+          "previewMode": "snapshot",
+          "fullscreenMode": "flv",
+          "snapshotUrl": "http://192.168.44.37/cgi-bin/api.cgi?cmd=Snap&channel=0&rs=wuuPhkmUCeI9WG7C&user=admin&password=Sh585058500",
+          "flvUrl": "https://192.168.44.37/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "fullscreenFlvUrl": "https://192.168.44.37/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "refreshMs": 2000,
+          "audioEnabled": true,
+          "layouts": {
+            "desktop": { "x": 2, "y": 0, "w": 1, "h": 1 },
+            "tablet":  { "x": 2, "y": 0, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 7, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "camera-251",
+          "type": "camera",
+          "title": "Garten",
+          "showTitle": false,
+          "previewMode": "snapshot",
+          "fullscreenMode": "flv",
+          "snapshotUrl": "http://192.168.44.251/cgi-bin/api.cgi?cmd=Snap&channel=0&rs=wuuPhkmUCeI9WG7C&user=admin&password=Sh585058500",
+          "flvUrl": "https://192.168.44.251/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "fullscreenFlvUrl": "https://192.168.44.251/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "refreshMs": 2000,
+          "audioEnabled": true,
+          "layouts": {
+            "desktop": { "x": 2, "y": 1, "w": 1, "h": 1 },
+            "tablet":  { "x": 2, "y": 1, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 8, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "camera-249",
+          "type": "camera",
+          "title": "Terrasse",
+          "showTitle": false,
+          "previewMode": "snapshot",
+          "fullscreenMode": "flv",
+          "snapshotUrl": "http://192.168.44.249/cgi-bin/api.cgi?cmd=Snap&channel=0&rs=wuuPhkmUCeI9WG7C&user=admin&password=Sh585058500",
+          "flvUrl": "https://192.168.44.249/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "fullscreenFlvUrl": "https://192.168.44.249/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "refreshMs": 2000,
+          "audioEnabled": true,
+          "layouts": {
+            "desktop": { "x": 1, "y": 2, "w": 1, "h": 1 },
+            "tablet":  { "x": 1, "y": 2, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 9, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "camera-248",
+          "type": "camera",
+          "title": "Garage",
+          "showTitle": false,
+          "previewMode": "snapshot",
+          "fullscreenMode": "flv",
+          "snapshotUrl": "http://192.168.44.248/cgi-bin/api.cgi?cmd=Snap&channel=0&rs=wuuPhkmUCeI9WG7C&user=admin&password=Sh585058500",
+          "flvUrl": "https://192.168.44.248/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "fullscreenFlvUrl": "https://192.168.44.248/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=Sh585058500",
+          "refreshMs": 2000,
+          "audioEnabled": true,
+          "layouts": {
+            "desktop": { "x": 2, "y": 2, "w": 1, "h": 1 },
+            "tablet":  { "x": 2, "y": 2, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 10, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "link-bmw",
+          "type": "link",
+          "title": "BMW",
+          "showTitle": false,
+          "url": "http://192.168.44.31:8099",
+          "openInOverlay": true,
+          "layouts": {
+            "desktop": { "x": 0, "y": 5, "w": 1, "h": 1 },
+            "tablet":  { "x": 0, "y": 5, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 11, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "link-alarmsystem",
+          "type": "link",
+          "title": "Alarm",
+          "showTitle": false,
+          "url": "http://192.168.44.31:8082/adapter/alarmsystem/webui/index.html?instance=alarmsystem.0",
+          "openInOverlay": true,
+          "layouts": {
+            "desktop": { "x": 1, "y": 3, "w": 1, "h": 1 },
+            "tablet":  { "x": 1, "y": 3, "w": 1, "h": 1 },
+            "phone":   { "x": 0, "y": 12, "w": 1, "h": 1 }
+          }
+        },
+        {
+          "id": "solar-home",
+          "type": "solar",
+          "title": "Solar",
+          "showTitle": false,
+          "pvStateId": "ekd-solar.0.friendly.leistung_pv_aktuell",
+          "homeStateId": "ekd-solar.0.friendly.hausverbrauch_aktuell",
+          "gridStateId": "ekd-solar.0.friendly.netzbezug_aktuell",
+          "batteryStateId": "ekd-solar.0.friendly.ladeleistung_akku",
+          "socStateId": "ekd-solar.0.friendly.ladezustand_akku",
+          "pvDayStateId": "ekd-solar.0.friendly.pv_ertrag_gesamt",
+          "homeDayStateId": "ekd-solar.0.friendly.tagesverbrauch_gesamt",
+          "selfDayStateId": "ekd-solar.0.friendly.tages_eigenverbrauch_gesamt",
+          "battTempStateId": "ekd-solar.0.friendly.akku_temp_bms1",
+          "layouts": {
+            "desktop": { "x": 2, "y": 3, "w": 1, "h": 3 },
+            "tablet":  { "x": 2, "y": 3, "w": 1, "h": 3 },
+            "phone":   { "x": 0, "y": 13, "w": 1, "h": 3 }
+          }
+        },
+        {
+          "id": "grafana-akku-home",
+          "type": "grafana",
+          "title": "Akku",
+          "showTitle": false,
+          "snapshotUrl": "http://192.168.44.31:3000/render/d-solo/dcb00a5d-ad36-4041-a417-4c5bbd94af84/akku-ladezustand?orgId=1&panelId=1&width=600&height=300&tz=browser",
+          "refreshMs": 60000,
+          "layouts": {
+            "desktop": { "x": 1, "y": 4, "w": 1, "h": 2 },
+            "tablet":  { "x": 1, "y": 4, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 16, "w": 1, "h": 2 }
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-pv",
+      "label": "PV / Auto / Heizung",
+      "widgets": [
+        {
+          "id": "wallbox-goe",
+          "type": "wallbox",
+          "title": "Wallbox",
+          "showTitle": false,
+          "powerStateId": "go-e-gemini-adapter.0.status.chargerPowerW",
+          "socStateId": "go-e-gemini-adapter.0.status.carSocPercent",
+          "statusStateId": "go-e-gemini-adapter.0.status.carState",
+          "chargedStateId": "go-e-gemini-adapter.0.status.sessionEnergyKWh",
+          "allowedCurrentStateId": "go-e-gemini-adapter.0.status.setCurrentA",
+          "writeCurrentStateId": "go-e-gemini-adapter.0.control.gridManual.currentA",
+          "toggleStateId": "go-e-gemini-adapter.0.control.allowCharging",
+          "layouts": {
+            "desktop": { "x": 0, "y": 0, "w": 1, "h": 3 },
+            "tablet":  { "x": 0, "y": 0, "w": 1, "h": 3 },
+            "phone":   { "x": 0, "y": 0, "w": 1, "h": 3 }
+          }
+        },
+        {
+          "id": "solar-pv",
+          "type": "solar",
+          "title": "Solar",
+          "showTitle": false,
+          "pvStateId": "ekd-solar.0.friendly.leistung_pv_aktuell",
+          "homeStateId": "ekd-solar.0.friendly.hausverbrauch_aktuell",
+          "gridStateId": "ekd-solar.0.friendly.netzbezug_aktuell",
+          "batteryStateId": "ekd-solar.0.friendly.ladeleistung_akku",
+          "socStateId": "ekd-solar.0.friendly.ladezustand_akku",
+          "pvDayStateId": "ekd-solar.0.friendly.pv_ertrag_gesamt",
+          "homeDayStateId": "ekd-solar.0.friendly.tagesverbrauch_gesamt",
+          "selfDayStateId": "ekd-solar.0.friendly.tages_eigenverbrauch_gesamt",
+          "battTempStateId": "ekd-solar.0.friendly.akku_temp_bms1",
+          "layouts": {
+            "desktop": { "x": 1, "y": 0, "w": 1, "h": 3 },
+            "tablet":  { "x": 1, "y": 0, "w": 1, "h": 3 },
+            "phone":   { "x": 0, "y": 3, "w": 1, "h": 3 }
+          }
+        },
+        {
+          "id": "heating-viessmann",
+          "type": "heating",
+          "title": "Heizung",
+          "showTitle": false,
+          "tempActualStateId": "sainlogic.0.weather.current.indoortemp",
+          "tempSetStateId": "viessmannapi.0.299550.0.features.heating.circuits.1.operating.programs.normal.commands.setTemperature.setValue",
+          "tempSetNormalStateId": "viessmannapi.0.299550.0.features.heating.circuits.1.operating.programs.normal.commands.setTemperature.setValue",
+          "tempSetReducedStateId": "viessmannapi.0.299550.0.features.heating.circuits.1.operating.programs.reduced.commands.setTemperature.setValue",
+          "modeReadStateId": "viessmannapi.0.299550.0.features.heating.circuits.1.operating.modes.active.properties.value.value",
+          "modeWriteStateId": "viessmannapi.0.299550.0.features.heating.circuits.1.operating.modes.active.commands.setMode.setValue",
+          "activeProgStateId": "viessmannapi.0.299550.0.features.heating.circuits.1.operating.programs.active.properties.value.value",
+          "valveStateId": "viessmannapi.0.299550.0.features.heating.compressors.0.power.properties.value.value",
+          "layouts": {
+            "desktop": { "x": 2, "y": 0, "w": 1, "h": 3 },
+            "tablet":  { "x": 2, "y": 0, "w": 1, "h": 3 },
+            "phone":   { "x": 0, "y": 6, "w": 1, "h": 3 }
+          }
+        },
+        {
+          "id": "grafana-wallbox",
+          "type": "grafana",
+          "title": "Wallbox",
+          "showTitle": false,
+          "snapshotUrl": "http://192.168.44.31:3000/render/d-solo/6757daa9-3b1f-4775-b352-0e1c94284fe1/wallbox-uebersicht?orgId=1&panelId=1&width=600&height=300&tz=browser",
+          "refreshMs": 60000,
+          "layouts": {
+            "desktop": { "x": 0, "y": 3, "w": 1, "h": 2 },
+            "tablet":  { "x": 0, "y": 3, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 9, "w": 1, "h": 2 }
+          }
+        },
+        {
+          "id": "grafana-pv",
+          "type": "grafana",
+          "title": "PV Übersicht",
+          "showTitle": false,
+          "snapshotUrl": "http://192.168.44.31:3000/render/d-solo/0874ec91-d0aa-419e-a9a1-e683d732e1ed/pv-overview?orgId=1&panelId=1&width=600&height=300&tz=browser",
+          "refreshMs": 60000,
+          "layouts": {
+            "desktop": { "x": 1, "y": 3, "w": 1, "h": 2 },
+            "tablet":  { "x": 1, "y": 3, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 11, "w": 1, "h": 2 }
+          }
+        },
+        {
+          "id": "grafana-heizung",
+          "type": "grafana",
+          "title": "Heizung Strom",
+          "showTitle": false,
+          "snapshotUrl": "http://192.168.44.31:3000/render/d-solo/d2e74275-6de1-4545-9bdc-483b30228324/heizung-stromverbrauch?orgId=1&panelId=1&width=600&height=300&tz=browser",
+          "refreshMs": 60000,
+          "layouts": {
+            "desktop": { "x": 2, "y": 3, "w": 1, "h": 2 },
+            "tablet":  { "x": 2, "y": 3, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 13, "w": 1, "h": 2 }
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-stats",
+      "label": "Pi Stats",
+      "widgets": [
+        {
+          "id": "log-iobroker",
+          "type": "log",
+          "title": "ioBroker Log",
+          "showTitle": false,
+          "minLevel": "info",
+          "maxLines": 80,
+          "layouts": {
+            "desktop": { "x": 0, "y": 0, "w": 2, "h": 4 },
+            "tablet":  { "x": 0, "y": 0, "w": 2, "h": 4 },
+            "phone":   { "x": 0, "y": 0, "w": 1, "h": 3 }
+          }
+        },
+        {
+          "id": "systemstats-host",
+          "type": "systemStats",
+          "title": "ioBroker Host",
+          "showTitle": false,
+          "refreshMs": 10000,
+          "layouts": {
+            "desktop": { "x": 2, "y": 0, "w": 1, "h": 2 },
+            "tablet":  { "x": 2, "y": 0, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 3, "w": 1, "h": 2 }
+          }
+        },
+        {
+          "id": "systemstats-nas",
+          "type": "systemStats",
+          "title": "NAS Pi",
+          "showTitle": false,
+          "host": "NAS-pi",
+          "refreshMs": 10000,
+          "layouts": {
+            "desktop": { "x": 2, "y": 2, "w": 1, "h": 2 },
+            "tablet":  { "x": 2, "y": 2, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 5, "w": 1, "h": 2 }
+          }
+        },
+        {
+          "id": "script-runner",
+          "type": "script",
+          "title": "Skripte",
+          "showTitle": false,
+          "showOutput": true,
+          "layouts": {
+            "desktop": { "x": 2, "y": 4, "w": 1, "h": 2 },
+            "tablet":  { "x": 2, "y": 4, "w": 1, "h": 2 },
+            "phone":   { "x": 0, "y": 7, "w": 1, "h": 2 }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
-dashboards/
+dashboards/*
+!dashboards/home1.json
 .graphify/
 
 # Editor directories and files
