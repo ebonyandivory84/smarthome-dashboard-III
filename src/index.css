@@ -3,11 +3,11 @@
 @import "react-resizable/css/styles.css";
 
 :root {
-  --bg: #040811;
-  --bg-alt: #0a1120;
-  --panel: rgba(18, 24, 38, 0.92);
-  --panel-2: rgba(15, 20, 34, 0.96);
-  --border: rgba(157, 173, 214, 0.14);
+  --bg: #02050a;
+  --bg-alt: #070c18;
+  --panel: rgba(15, 20, 33, 0.94);
+  --panel-2: rgba(12, 17, 28, 0.97);
+  --border: rgba(168, 184, 222, 0.18);
   --accent: #5c7cff;
   --accent-pink: #ff4db8;
   --accent-green: #6cff8f;
@@ -15,10 +15,10 @@
   --accent-yellow: #ffd166;
   --text: #f7f8fc;
   --text-muted: #8c94ad;
-  --card: rgba(255, 255, 255, 0.04);
-  --card-hover: rgba(255, 255, 255, 0.07);
-  --radius: 12px;
-  --radius-sm: 8px;
+  --card: rgba(255, 255, 255, 0.045);
+  --card-hover: rgba(255, 255, 255, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
   --topbar-h: 56px;
 }
 

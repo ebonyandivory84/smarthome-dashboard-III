@@ -38,53 +38,74 @@ export default function StateWidget({ widget }: Props) {
   };
 
   return (
-    <div
+    <motion.div
       className="widget-card"
       onClick={handlePress}
-      style={{ cursor: widget.writeable ? 'pointer' : 'default' }}
+      whileTap={widget.writeable ? { scale: 0.95 } : undefined}
+      style={{
+        cursor: widget.writeable ? 'pointer' : 'default',
+        background: isOn ? `${accent}1c` : 'var(--panel)',
+        border: `1px solid ${isOn ? `${accent}55` : 'var(--border)'}`,
+        transition: 'background 0.18s, border-color 0.18s',
+      }}
     >
-      {widget.showTitle !== false && <div className="widget-title">{widget.title}</div>}
-
-      <div className="widget-body" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column',
+        justifyContent: 'center', alignItems: 'center', gap: 7,
+        padding: '10px 8px',
+      }}>
         {/* Icon / image */}
         {widget.iconImage ? (
           <img
             src={widget.iconImage}
             alt=""
             style={{
-              width: 48, height: 48,
+              width: 36, height: 36,
               borderRadius: widget.iconImageCrop === 'circle' ? '50%' : widget.iconImageCrop === 'rounded' ? 10 : 0,
               objectFit: 'cover',
-              opacity: isOn ? 1 : 0.4,
-              transition: 'opacity 0.2s',
+              opacity: isOn ? 1 : 0.45,
+              transition: 'opacity 0.18s',
             }}
           />
         ) : (
-          <motion.div
-            animate={{ scale: isOn ? 1 : 0.85, opacity: isOn ? 1 : 0.4 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            style={{
-              width: 40, height: 40,
-              borderRadius: '50%',
-              background: isOn ? accent : 'var(--card)',
-              border: `2px solid ${isOn ? accent : 'var(--border)'}`,
-              boxShadow: isOn ? `0 0 16px ${accent}60` : 'none',
-              transition: 'background 0.2s, border-color 0.2s, box-shadow 0.2s',
-            }}
-          />
+          <div style={{
+            width: 36, height: 36, borderRadius: 11, flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: isOn ? `${accent}2e` : 'rgba(255,255,255,0.06)',
+            border: `1.5px solid ${isOn ? `${accent}80` : 'rgba(255,255,255,0.1)'}`,
+            boxShadow: isOn ? `0 0 12px ${accent}40` : 'none',
+            transition: 'background 0.18s, border-color 0.18s, box-shadow 0.18s',
+          }}>
+            <div style={{
+              width: 11, height: 11, borderRadius: '50%',
+              background: isOn ? accent : 'var(--text-muted)',
+              opacity: isOn ? 1 : 0.6,
+            }} />
+          </div>
+        )}
+
+        {widget.showTitle !== false && (
+          <div style={{
+            fontSize: 11, fontWeight: 600, color: 'var(--text)',
+            textAlign: 'center', lineHeight: 1.2, maxWidth: '100%',
+            overflow: 'hidden', display: '-webkit-box',
+            WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' as const,
+          }}>
+            {widget.title}
+          </div>
         )}
 
         {/* Value label */}
         <div style={{
-          fontSize: 22,
-          fontWeight: 700,
-          color: isOn ? 'var(--text)' : 'var(--text-muted)',
+          fontSize: 11,
+          fontWeight: 600,
+          color: isOn ? accent : 'var(--text-muted)',
           textAlign: 'center',
           lineHeight: 1.1,
         }}>
           {resolveLabel(val, widget)}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

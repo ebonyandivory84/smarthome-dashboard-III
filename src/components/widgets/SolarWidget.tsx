@@ -141,10 +141,14 @@ function Ribbon({ id, a, b, bow, wA, wB, color, active, dur }: RibbonProps) {
       </defs>
       <path d={buildRibbon(a, b, bow, wA, wB)} fill={`url(#${gid})`} />
       {active && (
-        <path d={centerline(a, b, bow)} fill="none" stroke={color}
-          strokeWidth={3} strokeLinecap="round" strokeDasharray="8 10"
-          strokeDashoffset={0} opacity={0.85} filter="url(#solar-glow)"
-          style={{ animation: `solar-flow ${dur}ms linear infinite` }} />
+        <>
+          <circle r={4} fill={color} opacity={0.9} filter="url(#solar-glow)">
+            <animateMotion path={centerline(a, b, bow)} dur={`${dur}ms`} repeatCount="indefinite" />
+          </circle>
+          <circle r={4} fill={color} opacity={0.6} filter="url(#solar-glow)">
+            <animateMotion path={centerline(a, b, bow)} dur={`${dur}ms`} begin={`${-dur * 0.5}ms`} repeatCount="indefinite" />
+          </circle>
+        </>
       )}
     </>
   );
@@ -307,7 +311,6 @@ export default function SolarWidget({ widget }: Props) {
         style={{ width: '100%', height: 'auto', display: 'block' }}
         preserveAspectRatio="xMidYMid meet">
         <defs>
-          <style>{`@keyframes solar-flow { to { stroke-dashoffset: -18; } }`}</style>
           <filter id="solar-glow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur" />
             <feMerge>
