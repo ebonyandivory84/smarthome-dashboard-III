@@ -131,22 +131,28 @@ interface RibbonProps {
 }
 function Ribbon({ id, a, b, bow, wA, wB, color, active, dur }: RibbonProps) {
   const gid = `sg-${id}`;
+  const cl = centerline(a, b, bow);
   return (
     <>
       <defs>
         <linearGradient id={gid} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor={color} stopOpacity={active ? 0.42 : 0.12} />
-          <stop offset="100%" stopColor={color} stopOpacity={active ? 0.16 : 0.04} />
+          <motion.stop offset="0%" stopColor={color}
+            animate={{ stopOpacity: active ? 0.42 : 0.12 }} transition={{ duration: 0.4, ease: 'easeOut' }} />
+          <motion.stop offset="100%" stopColor={color}
+            animate={{ stopOpacity: active ? 0.18 : 0.04 }} transition={{ duration: 0.4, ease: 'easeOut' }} />
         </linearGradient>
       </defs>
       <path d={buildRibbon(a, b, bow, wA, wB)} fill={`url(#${gid})`} />
       {active && (
         <>
-          <circle r={4} fill={color} opacity={0.9} filter="url(#solar-glow)">
-            <animateMotion path={centerline(a, b, bow)} dur={`${dur}ms`} repeatCount="indefinite" />
+          <circle r={4.2} fill={color} opacity={0.9} filter="url(#solar-glow)">
+            <animateMotion path={cl} dur={`${dur}ms`} repeatCount="indefinite" />
           </circle>
-          <circle r={4} fill={color} opacity={0.6} filter="url(#solar-glow)">
-            <animateMotion path={centerline(a, b, bow)} dur={`${dur}ms`} begin={`${-dur * 0.5}ms`} repeatCount="indefinite" />
+          <circle r={3.2} fill={color} opacity={0.55} filter="url(#solar-glow)">
+            <animateMotion path={cl} dur={`${dur}ms`} begin={`${-dur * 0.33}ms`} repeatCount="indefinite" />
+          </circle>
+          <circle r={3.6} fill={color} opacity={0.7} filter="url(#solar-glow)">
+            <animateMotion path={cl} dur={`${dur}ms`} begin={`${-dur * 0.66}ms`} repeatCount="indefinite" />
           </circle>
         </>
       )}
@@ -159,10 +165,12 @@ function PillNode({ cx, cy, w, h, color, value, label, active }: {
   color: string; value: string; label: string; active: boolean;
 }) {
   return (
-    <g filter={active ? 'url(#solar-glow)' : undefined}>
-      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx={h / 2}
-        fill="rgba(8,12,22,0.92)" stroke={color}
-        strokeOpacity={active ? 0.75 : 0.3} strokeWidth={1.5} />
+    <motion.g filter={active ? 'url(#solar-glow)' : undefined}
+      animate={{ scale: active ? 1 : 0.97 }} transition={{ duration: 0.4, ease: 'easeOut' }}
+      style={{ transformOrigin: `${cx}px ${cy}px` }}>
+      <motion.rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx={h / 2}
+        fill="rgba(8,12,22,0.92)" stroke={color} strokeWidth={1.5}
+        animate={{ strokeOpacity: active ? 0.75 : 0.3 }} transition={{ duration: 0.35 }} />
       <text x={cx} y={cy - 2} textAnchor="middle"
         fill={color} fontSize={12} fontWeight={800} fontFamily="system-ui,sans-serif">
         {value}
@@ -171,15 +179,17 @@ function PillNode({ cx, cy, w, h, color, value, label, active }: {
         fill="rgba(255,255,255,0.42)" fontSize={8} fontFamily="system-ui,sans-serif">
         {label}
       </text>
-    </g>
+    </motion.g>
   );
 }
 
-function HubNode({ value }: { value: string }) {
+function HubNode({ value, pulsing }: { value: string; pulsing: boolean }) {
   return (
     <g filter="url(#solar-glow)">
-      <circle cx={HOME.cx} cy={HOME.cy} r={HOME.r}
-        fill="rgba(8,12,22,0.92)" stroke="#5c7cff" strokeOpacity={0.6} strokeWidth={1.6} />
+      <motion.circle cx={HOME.cx} cy={HOME.cy} r={HOME.r}
+        fill="rgba(8,12,22,0.92)" stroke="#5c7cff" strokeWidth={1.6}
+        animate={{ strokeOpacity: pulsing ? [0.5, 0.85, 0.5] : 0.6 }}
+        transition={pulsing ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.4 }} />
       <text x={HOME.cx} y={HOME.cy - 4} textAnchor="middle"
         fill="#aebfff" fontSize={14} fontWeight={800} fontFamily="system-ui,sans-serif">
         {value}
@@ -319,13 +329,23 @@ export default function SolarWidget({ widget }: Props) {
             </feMerge>
           </filter>
           <radialGradient id="hub-glow-grad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stopColor="#5c7cff" stopOpacity={hubGlow} />
+            <stop offset="0%"   stopColor="#5c7cff" stopOpacity={1} />
             <stop offset="100%" stopColor="#5c7cff" stopOpacity={0} />
+          </radialGradient>
+          <radialGradient id="scene-vignette" cx="50%" cy="42%" r="75%">
+            <stop offset="0%"   stopColor="#0e1830" stopOpacity={0} />
+            <stop offset="100%" stopColor="#02050a" stopOpacity={0.35} />
           </radialGradient>
         </defs>
 
+        {/* Scene vignette — subtle depth behind the whole flow diagram */}
+        <rect x={0} y={0} width={VW} height={VH} fill="url(#scene-vignette)" />
+
         {/* Hub ambient glow — drawn first, below everything */}
-        <circle cx={HOME.cx} cy={HOME.cy} r={76} fill="url(#hub-glow-grad)" />
+        <motion.circle cx={HOME.cx} cy={HOME.cy} r={76} fill="url(#hub-glow-grad)"
+          animate={{ opacity: hubGlow, scale: totalFlow > 50 ? [1, 1.05, 1] : 1 }}
+          transition={{ opacity: { duration: 0.6, ease: 'easeOut' }, scale: { duration: 3.4, repeat: Infinity, ease: 'easeInOut' } }}
+          style={{ transformOrigin: `${HOME.cx}px ${HOME.cy}px` }} />
 
         {/* Ribbons — below nodes so nodes occlude ribbon endpoints */}
         <Ribbon id="pv"
@@ -381,7 +401,7 @@ export default function SolarWidget({ widget }: Props) {
           <BattNode soc={socRaw} battColor={battColor} value={battVal} />
         )}
 
-        <HubNode value={homeVal} />
+        <HubNode value={homeVal} pulsing={totalFlow > 50} />
       </svg>
 
       {/* Daily stats — glass chips with fade-in */}

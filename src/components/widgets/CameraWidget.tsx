@@ -25,7 +25,7 @@ export default function CameraWidget({ widget }: Props) {
     <>
       <div className="widget-card" style={{ cursor: 'pointer' }} onClick={open}>
         {widget.showTitle !== false && <div className="widget-title">{widget.title}</div>}
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#000' }}>
           <CameraPreview
             mode={mode}
             snapshotUrl={widget.snapshotUrl}
@@ -107,7 +107,7 @@ function SnapshotView({ url, refreshMs = 5000, active, style }: { url?: string; 
     <img
       src={src}
       alt="camera"
-      style={{ width: '100%', height: '100%', objectFit: 'cover', ...style }}
+      style={{ width: '100%', height: '100%', objectFit: 'contain', ...style }}
       draggable={false}
     />
   );
@@ -117,7 +117,7 @@ function SnapshotView({ url, refreshMs = 5000, active, style }: { url?: string; 
 function MjpegView({ url, style }: { url?: string; style?: React.CSSProperties }) {
   if (!url) return <Placeholder text="MJPEG-URL fehlt" />;
   const proxied = `/api/camera-stream?streamType=mjpeg&url=${encodeURIComponent(url)}`;
-  return <img src={proxied} alt="camera" style={{ width: '100%', height: '100%', objectFit: 'cover', ...style }} />;
+  return <img src={proxied} alt="camera" style={{ width: '100%', height: '100%', objectFit: 'contain', ...style }} />;
 }
 
 // ── FLV ───────────────────────────────────────────────────────────────────────
@@ -146,7 +146,7 @@ function FlvView({ url, style }: { url?: string; style?: React.CSSProperties }) 
     <video
       ref={videoRef}
       autoPlay muted playsInline
-      style={{ width: '100%', height: '100%', objectFit: 'cover', ...style }}
+      style={{ width: '100%', height: '100%', objectFit: 'contain', ...style }}
     />
   );
 }
