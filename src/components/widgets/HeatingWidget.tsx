@@ -110,7 +110,7 @@ export default function HeatingWidget({ widget }: Props) {
 
         {/* ── Temperature KPI card ── */}
         <div style={{
-          borderRadius: 12, padding: '10px 12px',
+          borderRadius: 16, padding: '10px 12px',
           background: `${cardColor}18`,
           border: `1px solid ${cardColor}50`,
           position: 'relative', overflow: 'hidden',
@@ -168,7 +168,7 @@ export default function HeatingWidget({ widget }: Props) {
             <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Betriebsart</div>
             <div style={{
               display: 'flex', gap: 5,
-              padding: 5, borderRadius: 12,
+              padding: 5, borderRadius: 14,
               background: 'rgba(255,255,255,0.035)',
               border: '1px solid rgba(184,206,242,0.14)',
             }}>
@@ -181,7 +181,7 @@ export default function HeatingWidget({ widget }: Props) {
                     onClick={() => setMode(m.val)}
                     style={{
                       flex: 1, padding: '6px 4px',
-                      borderRadius: 9, fontSize: 10, fontWeight: 700,
+                      borderRadius: 10, fontSize: 10, fontWeight: 700,
                       cursor: 'pointer', display: 'flex', flexDirection: 'column',
                       alignItems: 'center', gap: 2,
                       background: active ? m.color : 'transparent',
@@ -221,7 +221,7 @@ export default function HeatingWidget({ widget }: Props) {
         {/* ── Status ticker ── */}
         {tickerParts && (
           <div style={{
-            padding: '6px 10px', borderRadius: 9,
+            padding: '6px 10px', borderRadius: 12,
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(184,206,242,0.12)',
             overflow: 'hidden', whiteSpace: 'nowrap',
@@ -254,7 +254,7 @@ function StepBtn({ onClick, children }: { onClick: () => void; children: React.R
 function TempCard({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <div style={{
-      flex: 1, padding: '6px 10px', borderRadius: 9,
+      flex: 1, padding: '6px 10px', borderRadius: 12,
       background: 'rgba(255,255,255,0.04)',
       border: '1px solid rgba(191,209,245,0.14)',
     }}>

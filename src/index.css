@@ -17,8 +17,13 @@
   --text-muted: #8c94ad;
   --card: rgba(255, 255, 255, 0.045);
   --card-hover: rgba(255, 255, 255, 0.08);
-  --radius: 14px;
-  --radius-sm: 10px;
+  --radius: 22px;
+  --radius-sm: 14px;
+  --radius-lg: 26px;
+  --shadow-card: 0 10px 32px rgba(0, 0, 0, 0.38);
+  --grad-blue: linear-gradient(150deg, #4f7cff 0%, #1f3fa8 100%);
+  --grad-pink: linear-gradient(150deg, #ff6ad5 0%, #b22d8c 100%);
+  --grad-green: linear-gradient(150deg, #4ee08a 0%, #189c5c 100%);
   --topbar-h: 56px;
 }
 
@@ -62,6 +67,7 @@ html, body {
   border-radius: var(--radius);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
   height: 100%;
   display: flex;

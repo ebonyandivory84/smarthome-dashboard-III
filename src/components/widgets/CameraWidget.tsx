@@ -9,6 +9,7 @@ interface Props { widget: CameraWidgetConfig }
 
 export default function CameraWidget({ widget }: Props) {
   const [fullscreen, setFullscreen] = useState(false);
+  const [refreshTick, setRefreshTick] = useState(0);
 
   const maxState = useIoBrokerState(widget.maximizeStateId);
   useEffect(() => {
@@ -20,13 +21,18 @@ export default function CameraWidget({ widget }: Props) {
 
   const open = () => { setFullscreen(true); playSound('maximize'); };
   const close = () => { setFullscreen(false); playSound('minimize'); };
+  const refresh = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    playSound('tap4');
+    setRefreshTick(t => t + 1);
+  };
 
   return (
     <>
-      <div className="widget-card" style={{ cursor: 'pointer' }} onClick={open}>
-        {widget.showTitle !== false && <div className="widget-title">{widget.title}</div>}
+      <div className="widget-card" style={{ cursor: 'pointer', padding: 0 }} onClick={open}>
         <div style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#000' }}>
           <CameraPreview
+            key={refreshTick}
             mode={mode}
             snapshotUrl={widget.snapshotUrl}
             mjpegUrl={widget.mjpegUrl}
@@ -34,6 +40,31 @@ export default function CameraWidget({ widget }: Props) {
             refreshMs={widget.refreshMs}
             active
           />
+
+          {widget.showTitle !== false && (
+            <div style={{
+              position: 'absolute', left: 0, right: 0, bottom: 0,
+              padding: '24px 14px 10px',
+              background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)',
+              pointerEvents: 'none',
+            }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{widget.title}</div>
+            </div>
+          )}
+
+          <button
+            onClick={refresh}
+            style={{
+              position: 'absolute', top: 10, right: 10,
+              width: 30, height: 30, borderRadius: '50%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.45)', border: '1px solid rgba(255,255,255,0.2)',
+              color: '#fff', cursor: 'pointer',
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            <RefreshIcon />
+          </button>
         </div>
       </div>
 
@@ -71,6 +102,17 @@ export default function CameraWidget({ widget }: Props) {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function RefreshIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12a9 9 0 0 1 15.3-6.4L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-15.3 6.4L3 16" />
+      <path d="M3 21v-5h5" />
+    </svg>
   );
 }
 

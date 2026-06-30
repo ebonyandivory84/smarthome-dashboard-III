@@ -9,11 +9,11 @@ type Stats = { cpu: number; mem: number; disk: number; uptime: number };
 
 function Bar({ value, color }: { value: number; color: string }) {
   return (
-    <div style={{ height: 4, background: 'var(--card)', borderRadius: 2, overflow: 'hidden' }}>
+    <div style={{ height: 7, background: 'var(--card)', borderRadius: 4, overflow: 'hidden' }}>
       <motion.div
         animate={{ width: `${Math.min(100, Math.max(0, value))}%` }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ height: '100%', background: color, borderRadius: 2 }}
+        style={{ height: '100%', background: color, borderRadius: 4 }}
       />
     </div>
   );

@@ -19,23 +19,32 @@ export default function LinkWidget({ widget }: Props) {
       <div
         className="widget-card"
         onClick={handlePress}
-        style={{ cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          cursor: 'pointer', padding: 0,
+          alignItems: widget.iconImage ? 'stretch' : 'center',
+          justifyContent: widget.iconImage ? 'flex-end' : 'center',
+        }}
       >
         {widget.iconImage && (
           <img
             src={widget.iconImage}
             alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, opacity: 0.7 }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
             draggable={false}
           />
         )}
-        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', padding: 12 }}>
+        <div style={{
+          position: 'relative', zIndex: 1,
+          textAlign: widget.iconImage ? 'left' : 'center',
+          padding: widget.iconImage ? '24px 14px 10px' : 12,
+          background: widget.iconImage ? 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' : undefined,
+        }}>
           {widget.showTitle !== false && (
-            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>
               {widget.label ?? widget.title}
             </div>
           )}
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
+          <div style={{ fontSize: 11, color: widget.iconImage ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)', marginTop: 4 }}>
             {new URL(widget.url).hostname}
           </div>
         </div>
@@ -52,7 +61,7 @@ export default function LinkWidget({ widget }: Props) {
             <div style={{ display: 'flex', justifyContent: 'flex-end', padding: 8, background: 'var(--panel-2)' }}>
               <button
                 onClick={() => { setOpen(false); playSound('minimize'); }}
-                style={{ padding: '6px 14px', borderRadius: 8, background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--text)', cursor: 'pointer', fontSize: 12 }}
+                style={{ padding: '6px 14px', borderRadius: 12, background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--text)', cursor: 'pointer', fontSize: 12 }}
               >
                 ✕ Schließen
               </button>

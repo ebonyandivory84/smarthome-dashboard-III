@@ -51,17 +51,30 @@ export default function StateWidget({ widget }: Props) {
     >
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
-        justifyContent: 'center', alignItems: 'center', gap: 7,
-        padding: '10px 8px',
+        justifyContent: 'center', alignItems: 'flex-start', gap: 8,
+        padding: '12px',
       }}>
+        {widget.format !== 'boolean' && val !== null && (
+          <div style={{
+            position: 'absolute', top: 10, right: 10,
+            fontSize: 10, fontWeight: 700,
+            color: isOn ? accent : 'var(--text-muted)',
+            background: isOn ? `${accent}22` : 'rgba(255,255,255,0.07)',
+            border: `1px solid ${isOn ? `${accent}55` : 'rgba(255,255,255,0.1)'}`,
+            borderRadius: 999, padding: '3px 8px',
+          }}>
+            {resolveLabel(val, widget)}
+          </div>
+        )}
+
         {/* Icon / image */}
         {widget.iconImage ? (
           <img
             src={widget.iconImage}
             alt=""
             style={{
-              width: 36, height: 36,
-              borderRadius: widget.iconImageCrop === 'circle' ? '50%' : widget.iconImageCrop === 'rounded' ? 10 : 0,
+              width: 38, height: 38,
+              borderRadius: widget.iconImageCrop === 'circle' ? '50%' : widget.iconImageCrop === 'rounded' ? 12 : 0,
               objectFit: 'cover',
               opacity: isOn ? 1 : 0.45,
               transition: 'opacity 0.18s',
@@ -69,7 +82,7 @@ export default function StateWidget({ widget }: Props) {
           />
         ) : (
           <div style={{
-            width: 36, height: 36, borderRadius: 11, flexShrink: 0,
+            width: 38, height: 38, borderRadius: 14, flexShrink: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             background: isOn ? `${accent}2e` : 'rgba(255,255,255,0.06)',
             border: `1.5px solid ${isOn ? `${accent}80` : 'rgba(255,255,255,0.1)'}`,
@@ -86,8 +99,8 @@ export default function StateWidget({ widget }: Props) {
 
         {widget.showTitle !== false && (
           <div style={{
-            fontSize: 11, fontWeight: 600, color: 'var(--text)',
-            textAlign: 'center', lineHeight: 1.2, maxWidth: '100%',
+            fontSize: 12, fontWeight: 600, color: 'var(--text)',
+            textAlign: 'left', lineHeight: 1.2, maxWidth: '100%',
             overflow: 'hidden', display: '-webkit-box',
             WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' as const,
           }}>
@@ -95,16 +108,17 @@ export default function StateWidget({ widget }: Props) {
           </div>
         )}
 
-        {/* Value label */}
-        <div style={{
-          fontSize: 11,
-          fontWeight: 600,
-          color: isOn ? accent : 'var(--text-muted)',
-          textAlign: 'center',
-          lineHeight: 1.1,
-        }}>
-          {resolveLabel(val, widget)}
-        </div>
+        {widget.format === 'boolean' && (
+          <div style={{
+            fontSize: 11,
+            fontWeight: 600,
+            color: isOn ? accent : 'var(--text-muted)',
+            textAlign: 'left',
+            lineHeight: 1.1,
+          }}>
+            {resolveLabel(val, widget)}
+          </div>
+        )}
       </div>
     </motion.div>
   );

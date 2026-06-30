@@ -80,7 +80,7 @@ export default function WallboxWidget({ widget }: Props) {
           padding: '7px 10px',
           background: 'rgba(255,255,255,0.04)',
           border: '1px solid rgba(191,209,245,0.14)',
-          borderRadius: 10,
+          borderRadius: 14,
         }}>
           <div style={{
             width: 8, height: 8, borderRadius: '50%',
@@ -156,7 +156,7 @@ export default function WallboxWidget({ widget }: Props) {
                     onClick={() => setAmpere(a)}
                     style={{
                       flex: 1, padding: '6px 2px',
-                      borderRadius: 8, fontSize: 11, fontWeight: 600,
+                      borderRadius: 10, fontSize: 11, fontWeight: 600,
                       cursor: 'pointer',
                       background: active ? 'rgba(95,158,255,0.25)' : 'var(--card)',
                       border: `1px solid ${active ? 'rgba(95,158,255,0.6)' : 'var(--border)'}`,
@@ -177,7 +177,7 @@ export default function WallboxWidget({ widget }: Props) {
             whileTap={{ scale: 0.97 }}
             onClick={toggle}
             style={{
-              padding: '8px 12px', borderRadius: 10,
+              padding: '8px 12px', borderRadius: 14,
               background: isOn ? 'rgba(108,255,143,0.12)' : 'rgba(255,107,122,0.1)',
               border: `1px solid ${isOn ? 'rgba(108,255,143,0.4)' : 'rgba(255,107,122,0.35)'}`,
               color: isOn ? '#6cff8f' : '#ff6b7a',
@@ -201,7 +201,7 @@ export default function WallboxWidget({ widget }: Props) {
 function MetricCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
     <div style={{
-      flex: 1, padding: '7px 10px', borderRadius: 9,
+      flex: 1, padding: '7px 10px', borderRadius: 12,
       background: 'rgba(255,255,255,0.04)',
       border: '1px solid rgba(191,209,245,0.14)',
     }}>

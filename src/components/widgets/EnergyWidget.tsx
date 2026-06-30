@@ -36,13 +36,13 @@ export default function EnergyWidget({ widget }: Props) {
           <div
             key={node.label}
             style={{
-              background: `${node.color}10`,
-              border: `1px solid ${node.color}30`,
-              borderRadius: 8, padding: '10px 12px',
+              background: `linear-gradient(150deg, ${node.color}22 0%, ${node.color}08 100%)`,
+              border: `1px solid ${node.color}3a`,
+              borderRadius: 16, padding: '12px 14px',
             }}
           >
-            <div style={{ fontSize: 16, fontWeight: 700, color: node.color }}>{fmt(node.value)}</div>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>{node.label}</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: node.color }}>{fmt(node.value)}</div>
+            <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-muted)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{node.label}</div>
           </div>
         ))}
       </div>
