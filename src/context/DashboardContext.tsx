@@ -4,9 +4,31 @@ import React, {
 import { api, statePush } from '../services/iobroker';
 import { createDefaultConfig } from '../utils/defaultConfig';
 import { setSoundEnabled, setSoundVolume } from '../utils/sounds';
-import type { DashboardConfig, DashboardPage, WidgetConfig, GridPos, Breakpoint } from '../types/dashboard';
+import type { DashboardConfig, DashboardPage, WidgetConfig, GridPos, Breakpoint, Layouts } from '../types/dashboard';
 
 type ConnState = 'connecting' | 'online' | 'offline';
+
+// Grid ging von 3 auf 9 Spalten (desktop/tablet) bzw. 1 auf 3 (phone) — ×3 skaliert
+// bestehende Layouts verlustfrei auf die neue, feinere Auflösung.
+function migrateGridV2(cfg: DashboardConfig): DashboardConfig {
+  if ((cfg.version ?? 0) >= 4) return cfg;
+  const scaleLayouts = (layouts: Layouts): Layouts => {
+    const out: Layouts = {};
+    (Object.keys(layouts) as Breakpoint[]).forEach(bp => {
+      const pos = layouts[bp];
+      if (pos) out[bp] = { ...pos, x: pos.x * 3, w: pos.w * 3 };
+    });
+    return out;
+  };
+  return {
+    ...cfg,
+    version: 4,
+    pages: cfg.pages.map(p => ({
+      ...p,
+      widgets: p.widgets.map(w => ({ ...w, layouts: scaleLayouts(w.layouts) })) as WidgetConfig[],
+    })),
+  };
+}
 
 type DashboardContextValue = {
   config: DashboardConfig;
@@ -53,11 +75,13 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     statePush.connect();
     api.getConfig()
       .then(cfg => {
-        setConfig(cfg);
-        setActivePageId(cfg.pages[0]?.id ?? '');
-        const s = cfg.settings.soundSettings;
+        const migrated = migrateGridV2(cfg);
+        setConfig(migrated);
+        setActivePageId(migrated.pages[0]?.id ?? '');
+        const s = migrated.settings.soundSettings;
         if (s) { setSoundEnabled(s.enabled); setSoundVolume(s.volume); }
         setConn('online');
+        if (migrated !== cfg) api.saveConfig(migrated).catch(console.error);
       })
       .catch(() => {
         setActivePageId(createDefaultConfig().pages[0].id);
@@ -186,8 +210,10 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
 
   const loadDashboard = useCallback(async (name: string) => {
     const cfg = await api.loadDashboard(name);
-    setConfig(cfg);
-    setActivePageId(cfg.pages[0]?.id ?? '');
+    const migrated = migrateGridV2(cfg);
+    setConfig(migrated);
+    setActivePageId(migrated.pages[0]?.id ?? '');
+    if (migrated !== cfg) api.saveConfig(migrated).catch(console.error);
   }, []);
 
   const deleteSavedDashboard = useCallback(async (name: string) => {

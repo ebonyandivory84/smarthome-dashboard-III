@@ -54,7 +54,7 @@ const WIDGET_MAP: Record<string, React.ComponentType<{ widget: WidgetConfig }>> 
 };
 
 const BREAKPOINTS = { desktop: 1280, tablet: 768, phone: 0 } as const;
-const COLS = { desktop: 3, tablet: 3, phone: 1 } as const;
+const COLS = { desktop: 9, tablet: 9, phone: 3 } as const;
 
 function toRGLLayout(widget: WidgetConfig, bp: Breakpoint): RGLItem {
   const pos: GridPos = widget.layouts[bp] ?? widget.layouts.desktop ?? { x: 0, y: 0, w: 1, h: 2 };

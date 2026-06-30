@@ -2,7 +2,7 @@ import type { DashboardConfig } from '../types/dashboard';
 
 export function createDefaultConfig(): DashboardConfig {
   return {
-    version: 3,
+    version: 4,
     settings: {
       title: 'SmartHome',
       homeLabel: 'Home',

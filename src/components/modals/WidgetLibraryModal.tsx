@@ -32,9 +32,9 @@ function makeDefaultWidget(def: WidgetDef, x = 0, y = 0): WidgetConfig {
     title: def.label,
     showTitle: true,
     layouts: {
-      desktop: { x, y, w: 1, h: def.defaultH },
-      tablet: { x: 0, y, w: 1, h: def.defaultH },
-      phone: { x: 0, y, w: 1, h: def.defaultH },
+      desktop: { x: x * 3, y, w: 3, h: def.defaultH },
+      tablet: { x: 0, y, w: 3, h: def.defaultH },
+      phone: { x: 0, y, w: 3, h: def.defaultH },
     },
   };
   // Type-specific defaults
